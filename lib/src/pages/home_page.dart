@@ -10,6 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> _locations = ['Adelaide', 'Brisbane', 'Bogota'];
+  int page = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +24,13 @@ class _HomePageState extends State<HomePage> {
               Icons.refresh,
               color: Colors.white,
             ),
-            onPressed: () => bloc.fetchWeather(),
+            onPressed: () {
+              if (bloc.isLoading) {
+                return null;
+              } else {
+                bloc.fetchWeather(_locations[page]);
+              }
+            },
           ),
         ],
       ),
@@ -29,9 +38,12 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         color: Theme.of(context).primaryColor,
         child: PageView.builder(
-          itemCount: 3,
+          itemCount: _locations.length,
           itemBuilder: (context, index) {
-            return WeatherView();
+            page = index;
+            return WeatherView(
+              location: _locations[index],
+            );
           },
         ),
       ),

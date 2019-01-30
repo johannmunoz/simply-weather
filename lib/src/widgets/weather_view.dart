@@ -6,8 +6,10 @@ import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 import 'package:weather_app/src/widgets/weather_widget.dart';
 
 class WeatherView extends StatefulWidget {
+  final String location;
   const WeatherView({
     Key key,
+    this.location,
   }) : super(key: key);
   @override
   State<StatefulWidget> createState() {
@@ -18,9 +20,14 @@ class WeatherView extends StatefulWidget {
 class _WeatherViewState extends State<WeatherView> {
   @override
   void initState() {
-    bloc.fetchWeather();
+    bloc.fetchWeather(widget.location);
     super.initState();
   }
+  // @override
+  // void dispose() {
+  //   bloc.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

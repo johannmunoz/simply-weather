@@ -8,11 +8,9 @@ class WeatherApiProvider {
   Client client = Client();
   final _apiKey = 'd2c5cdb524904fd4ab5234421191901';
 
-  List<String> _locations = ['Adelaide', 'Brisbane', 'Bogota'];
-
-  Future<WeatherModel> fetchWeather() async {
+  Future<WeatherModel> fetchWeather(String location) async {
     final response = await client.get(
-        "http://api.apixu.com/v1/forecast.json?key=$_apiKey&q=Adelaide&days=7");
+        "http://api.apixu.com/v1/forecast.json?key=$_apiKey&q=$location&days=7");
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       return WeatherModel.fromJson(json.decode(response.body));
