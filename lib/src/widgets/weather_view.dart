@@ -1,81 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 import 'package:weather_app/src/widgets/forecast_widget.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 import 'package:weather_app/src/widgets/weather_widget.dart';
 
-class WeatherView extends StatefulWidget {
-  final String location;
-  const WeatherView({
-    Key key,
-    this.location,
-  }) : super(key: key);
-  @override
-  State<StatefulWidget> createState() {
-    return _WeatherViewState();
-  }
-}
-
-class _WeatherViewState extends State<WeatherView> {
-  @override
-  void initState() {
-    bloc.fetchWeather(widget.location);
-    super.initState();
-  }
-  // @override
-  // void dispose() {
-  //   bloc.dispose();
-  //   super.dispose();
-  // }
+class WeatherView extends StatelessWidget {
+  final WeatherModel weatherInfo;
+  WeatherView(this.weatherInfo);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: bloc.getWeather,
-      builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
-        if (snapshot.hasData) {
-          return buildWeatherPage(snapshot);
-        } else if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-        return Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-  Column buildWeatherPage(AsyncSnapshot<WeatherModel> snapshot) {
-    final data = snapshot.data;
     return Column(
       children: <Widget>[
         Image.network(
-          data.current.condition.icon,
+          weatherInfo.current.condition.icon,
           scale: 0.5,
         ),
-        buildLocationDate(data),
+        buildLocationDate(),
         Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
-            buildCurrentTemperature(data),
-            buildMinMax(data),
+            buildCurrentTemperature(),
+            buildMinMax(),
           ],
         ),
         Expanded(
           child: Container(),
         ),
-        buildForecastItems(data),
+        buildForecastItems(),
         Expanded(
           child: Container(),
         ),
-        buildInfoWeather(data),
+        buildInfoWeather(),
       ],
     );
   }
 
-  Container buildCurrentTemperature(WeatherModel data) {
+  Container buildCurrentTemperature() {
     return Container(
       child: Text(
-        data.current.temperature.round().toString(),
+        weatherInfo.current.temperature.round().toString(),
         style: TextStyle(
           fontSize: 150.0,
           color: Colors.white,
@@ -85,7 +49,7 @@ class _WeatherViewState extends State<WeatherView> {
     );
   }
 
-  Padding buildInfoWeather(WeatherModel data) {
+  Padding buildInfoWeather() {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: 15.0,
@@ -99,7 +63,7 @@ class _WeatherViewState extends State<WeatherView> {
           ForecastWidget(
             title: 'Humidity',
             icon: Icons.cloud_queue,
-            value: data.current.humidity.toString() + ' %',
+            value: weatherInfo.current.humidity.toString() + ' %',
           ),
           MyVerticalDivider(
             height: 70.0,
@@ -109,7 +73,7 @@ class _WeatherViewState extends State<WeatherView> {
           ForecastWidget(
             title: 'Rain',
             icon: Icons.invert_colors,
-            value: data.current.precipitation.toString() + ' mm',
+            value: weatherInfo.current.precipitation.toString() + ' mm',
           ),
           MyVerticalDivider(
             height: 70.0,
@@ -119,30 +83,30 @@ class _WeatherViewState extends State<WeatherView> {
           ForecastWidget(
             title: 'UV',
             icon: Icons.wb_sunny,
-            value: data.current.uv.toString(),
+            value: weatherInfo.current.uv.toString(),
           ),
         ],
       ),
     );
   }
 
-  Container buildForecastItems(WeatherModel data) {
+  Container buildForecastItems() {
     return Container(
       height: 72.0,
       padding: EdgeInsets.only(left: 15.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: data.forecast.forecastdays.length - 1,
+        itemCount: weatherInfo.forecast.forecastdays.length - 1,
         itemBuilder: (context, index) {
           return WeatherWidget(
-            forecastday: data.forecast.forecastdays[index + 1],
+            forecastday: weatherInfo.forecast.forecastdays[index + 1],
           );
         },
       ),
     );
   }
 
-  Row buildMinMax(WeatherModel data) {
+  Row buildMinMax() {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +116,7 @@ class _WeatherViewState extends State<WeatherView> {
           color: Colors.white70,
         ),
         Text(
-          '${data.forecast.forecastdays[0].day.maxtemp.round()}°',
+          '${weatherInfo.forecast.forecastdays[0].day.maxtemp.round()}°',
           style: TextStyle(
             fontSize: 20.0,
             color: Colors.white,
@@ -167,7 +131,7 @@ class _WeatherViewState extends State<WeatherView> {
           color: Colors.white70,
         ),
         Text(
-          '${data.forecast.forecastdays[0].day.mintemp.round()}°',
+          '${weatherInfo.forecast.forecastdays[0].day.mintemp.round()}°',
           style: TextStyle(
             fontSize: 20.0,
             color: Colors.white,
@@ -178,12 +142,12 @@ class _WeatherViewState extends State<WeatherView> {
     );
   }
 
-  Container buildLocationDate(WeatherModel data) {
+  Container buildLocationDate() {
     return Container(
       child: Column(
         children: <Widget>[
           Text(
-            '${data.location.name}, ${data.location.country}',
+            '${weatherInfo.location.name}, ${weatherInfo.location.country}',
             style: TextStyle(
               fontSize: 20.0,
               color: Colors.white,
@@ -193,7 +157,7 @@ class _WeatherViewState extends State<WeatherView> {
             height: 4.0,
           ),
           Text(
-            data.location.localtime,
+            weatherInfo.location.localtime,
             style: TextStyle(
               fontSize: 20.0,
               color: Colors.white54,
