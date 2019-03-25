@@ -10,6 +10,33 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              
+            },
+            child: buildCurrentInfo(),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+          buildForecastItems(),
+          Expanded(
+            child: Container(),
+          ),
+          buildInfoWeather(),
+          Expanded(
+            child: Container(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column buildCurrentInfo() {
     return Column(
       children: <Widget>[
         Image.network(
@@ -24,14 +51,6 @@ class WeatherView extends StatelessWidget {
             buildMinMax(),
           ],
         ),
-        Expanded(
-          child: Container(),
-        ),
-        buildForecastItems(),
-        Expanded(
-          child: Container(),
-        ),
-        buildInfoWeather(),
       ],
     );
   }
@@ -92,7 +111,7 @@ class WeatherView extends StatelessWidget {
 
   Container buildForecastItems() {
     return Container(
-      height: 72.0,
+      height: 80.0,
       padding: EdgeInsets.only(left: 15.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

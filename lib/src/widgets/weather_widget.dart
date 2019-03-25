@@ -12,7 +12,7 @@ class WeatherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.0),
+      padding: EdgeInsets.symmetric(horizontal: 2.0),
       child: Row(
         children: <Widget>[
           Column(
@@ -28,16 +28,35 @@ class WeatherWidget extends StatelessWidget {
               Expanded(
                 child: Container(),
               ),
-              Text(
-                forecastday.day.avgtemp.round().toString() + '°',
-                style: Theme.of(context).textTheme.body2,
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_upward,
+                    color: Colors.white70,
+                  ),
+                  Text(
+                    forecastday.day.maxtemp.round().toString() + '°',
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                  SizedBox(
+                    width: 2.0,
+                  ),
+                  Icon(
+                    Icons.arrow_downward,
+                    color: Colors.white70,
+                  ),
+                  Text(
+                    forecastday.day.mintemp.round().toString() + '°',
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                ],
               ),
             ],
           ),
           MyVerticalDivider(
-            height: 70,
+            height: 80,
             color: Colors.white70,
-            margin: 14.0,
+            margin: 10.0,
           ),
         ],
       ),
