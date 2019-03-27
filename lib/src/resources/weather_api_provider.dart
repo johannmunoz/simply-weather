@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:http/http.dart' show Client;
+import 'package:weather_app/src/models/search_model.dart';
 import 'dart:convert';
 
 import 'package:weather_app/src/models/weather_model.dart';
@@ -14,6 +15,19 @@ class WeatherApiProvider {
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       return WeatherModel.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<SearchModel> fetchLocations(String query) async {
+    final response = await client
+        .get("http://api.apixu.com/v1/search.json?key=$_apiKey&q=$query");
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+      return SearchModel.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');

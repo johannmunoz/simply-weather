@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:weather_app/src/models/search_model.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 
 import '../resources/repository.dart';
@@ -6,22 +7,13 @@ import 'package:rxdart/rxdart.dart';
 
 class WeatherBloc {
   final _repository = Repository();
-  final _weatherFetcher = PublishSubject<WeatherModel>();
   final _weatherListFetcher = PublishSubject<List<WeatherModel>>();
-  bool _isLoading;
+  final _searchListFetcher = PublishSubject<SearchModel>();
 
-  Observable<WeatherModel> get getWeather => _weatherFetcher.stream;
   Observable<List<WeatherModel>> get getListWeather =>
       _weatherListFetcher.stream;
 
-  bool get isLoading => _isLoading;
-
-  fetchWeather(String location) async {
-    _isLoading = true;
-    WeatherModel weatherModel = await _repository.fetchWeather(location);
-    _weatherFetcher.sink.add(weatherModel);
-    _isLoading = false;
-  }
+  Observable<SearchModel> get getListLocations => _searchListFetcher.stream;
 
   fetchWeatherList(List<String> locations) async {
     List<WeatherModel> weatherList = await Future.wait(
@@ -30,9 +22,14 @@ class WeatherBloc {
     _weatherListFetcher.sink.add(weatherList);
   }
 
+  fetchSearchList(String location) async {
+    SearchModel searchList = await _repository.fetchLocations(location);
+    _searchListFetcher.sink.add(searchList);
+  }
+
   dispose() {
-    _weatherFetcher.close();
     _weatherListFetcher.close();
+    _searchListFetcher.close();
   }
 }
 

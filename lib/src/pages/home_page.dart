@@ -42,18 +42,30 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             ListTile(
               title: Text(
-                "Settings",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Icon(Icons.settings),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text(
                 "Manage Locations",
                 style: TextStyle(color: Colors.black),
               ),
               trailing: Icon(Icons.edit_location),
+              onTap: () {
+                Navigator.pushNamed(context, '/manage-locations');
+              },
+            ),
+            ListTile(
+              title: Text(
+                "Add Locations",
+                style: TextStyle(color: Colors.black),
+              ),
+              trailing: Icon(Icons.add_location),
+              onTap: () {
+                Navigator.pushNamed(context, '/add-location');
+              },
+            ),
+            ListTile(
+              title: Text(
+                "Settings",
+                style: TextStyle(color: Colors.black),
+              ),
+              trailing: Icon(Icons.settings),
               onTap: () {},
             ),
           ],
