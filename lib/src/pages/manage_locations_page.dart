@@ -19,7 +19,9 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
 
   void _getLocations() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _locations = prefs.getStringList('locations') ?? [];
+    setState(() {
+      _locations = prefs.getStringList('locations') ?? [];
+    });
   }
 
   void _onReorder(int oldIndex, int newIndex) {
@@ -39,7 +41,14 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
       key: Key(location),
       leading: IconButton(
         icon: Icon(Icons.delete),
-        onPressed: () {},
+        onPressed: () async {
+          setState(() {
+            _locations.remove(location);
+          });
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          prefs.setStringList('locations', _locations);
+        },
       ),
       title: Text(location),
       trailing: Icon(Icons.drag_handle),
@@ -51,6 +60,10 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+        ),
         title: Text('Manage Locations'),
       ),
       body: _locations.length > 0

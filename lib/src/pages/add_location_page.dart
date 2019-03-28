@@ -18,6 +18,10 @@ class _AddLocationPage extends State<AddLocationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+        ),
         title: Row(
           children: <Widget>[
             Expanded(
