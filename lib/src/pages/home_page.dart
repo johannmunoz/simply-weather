@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 import 'package:weather_app/src/widgets/weather_view.dart';
@@ -11,13 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _locations = ['Adelaide', 'Brisbane', 'Bogota'];
+  List<String> _locations = [];
   int page = 0;
 
   @override
   void initState() {
-    bloc.fetchWeatherList(_locations);
+    _getLocations();
+
     super.initState();
+  }
+
+  void _getLocations() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _locations = prefs.getStringList('locations') ?? ['Adelaide'];
+    bloc.fetchWeatherList(_locations);
   }
 
   @override

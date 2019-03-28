@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageLocationsPage extends StatefulWidget {
   @override
@@ -9,6 +10,17 @@ class ManageLocationsPage extends StatefulWidget {
 
 class _ManageLocationsPageState extends State<ManageLocationsPage> {
   static List<String> _locations = [];
+
+  @override
+  void initState() {
+    _getLocations();
+    super.initState();
+  }
+
+  void _getLocations() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _locations = prefs.getStringList('locations') ?? [];
+  }
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(() {
