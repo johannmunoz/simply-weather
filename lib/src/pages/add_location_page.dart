@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/search_model.dart';
 
@@ -102,15 +103,29 @@ class _AddLocationPage extends State<AddLocationPage> {
           return ListView.builder(
             itemCount: _locations.length,
             itemBuilder: (context, index) {
-              if (_locations.length == 0) {
-                return Center();
-              }
-              return ListTile(
-                title: GestureDetector(
-                  child: Text(_locations[index].name),
-                  onTap: () {
-                    
-                  },
+              return GestureDetector(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+
+                  List<String> locationsStored =
+                      prefs.getStringList('locations') ?? [];
+                  final List<String> wholeLocation =
+                      _locations[index].name.split(",");
+                  final String city = wholeLocation[0];
+                  print('current array: $locationsStored');
+                  locationsStored.add(city);
+                  await prefs.setStringList('locations', locationsStored);
+
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(_locations[index].name),
+                    ),
+                    Divider(),
+                  ],
                 ),
               );
             },

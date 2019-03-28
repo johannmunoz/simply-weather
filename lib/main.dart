@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         hintColor: Colors.white,
         inputDecorationTheme: InputDecorationTheme(
+          border: InputBorder.none,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.white,
