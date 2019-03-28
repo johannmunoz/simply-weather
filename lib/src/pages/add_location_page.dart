@@ -117,7 +117,6 @@ class _AddLocationPage extends State<AddLocationPage> {
                   final List<String> wholeLocation =
                       _locations[index].name.split(",");
                   final String city = wholeLocation[0];
-                  print('current array: $locationsStored');
                   locationsStored.add(city);
                   await prefs.setStringList('locations', locationsStored);
 

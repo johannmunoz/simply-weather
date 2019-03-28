@@ -24,7 +24,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
     });
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
+  void _onReorder(int oldIndex, int newIndex) async {
     setState(() {
       if (newIndex > oldIndex) {
         newIndex -= 1;
@@ -32,7 +32,8 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
       final String location = _locations.removeAt(oldIndex);
       _locations.insert(newIndex, location);
     });
-    print(_locations);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('locations', _locations);
   }
 
   Widget buildListTile(String location) {

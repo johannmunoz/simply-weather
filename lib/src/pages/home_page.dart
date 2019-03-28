@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   void _getLocations() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     _locations = prefs.getStringList('locations') ?? ['Adelaide'];
     bloc.fetchWeatherList(_locations);
   }
