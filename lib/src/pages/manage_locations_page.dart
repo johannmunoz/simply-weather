@@ -63,9 +63,14 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context, "/", (Route<dynamic> route) => false),
         ),
         title: Text('Manage Locations'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_location),
+        onPressed: () => Navigator.pushNamed(context, '/add-location'),
       ),
       body: _locations.length > 0
           ? Scrollbar(

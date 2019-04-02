@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void _getLocations() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    _locations = prefs.getStringList('locations') ?? ['Adelaide'];
+    _locations = prefs.getStringList('locations') ?? [];
     bloc.fetchWeatherList(_locations);
   }
 
@@ -36,49 +36,11 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              bloc.fetchWeatherList(_locations);
-            },
+            icon: Icon(Icons.settings),
+            tooltip: "Manage locations",
+            onPressed: () => Navigator.pushNamed(context, '/manage-locations'),
           ),
         ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text(
-                "Manage Locations",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Icon(Icons.edit_location),
-              onTap: () {
-                Navigator.pushNamed(context, '/manage-locations');
-              },
-            ),
-            ListTile(
-              title: Text(
-                "Add Locations",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Icon(Icons.add_location),
-              onTap: () {
-                Navigator.pushNamed(context, '/add-location');
-              },
-            ),
-            ListTile(
-              title: Text(
-                "Settings",
-                style: TextStyle(color: Colors.black),
-              ),
-              trailing: Icon(Icons.settings),
-              onTap: () {},
-            ),
-          ],
-        ),
       ),
       body: StreamBuilder(
         stream: bloc.getListWeather,
@@ -93,6 +55,13 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
+          } else if (snapshot.data.isEmpty) {
+            return Container(
+              color: Theme.of(context).primaryColor,
+              child: Center(
+                child: Text('Please add a location'),
+              ),
+            );
           }
           return PageView.builder(
             itemCount: snapshot.data.length,
