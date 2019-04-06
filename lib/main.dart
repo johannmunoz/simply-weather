@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      title: 'Weather',
+      title: 'MyWeather',
       theme: ThemeData(
         primaryColor: Colors.blue[700],
         accentColor: Colors.blue[100],

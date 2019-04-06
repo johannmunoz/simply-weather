@@ -58,8 +58,30 @@ class _HomePageState extends State<HomePage> {
           } else if (snapshot.data.isEmpty) {
             return Container(
               color: Theme.of(context).primaryColor,
-              child: Center(
-                child: Text('Please add a location'),
+              child: Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text('Please add a location'),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    FlatButton.icon(
+                      color: Theme.of(context).accentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20.0),
+                        ),
+                      ),
+                      icon: Icon(Icons.add),
+                      label: Text('Add Location'),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/add-location'),
+                    )
+                  ],
+                ),
               ),
             );
           }
