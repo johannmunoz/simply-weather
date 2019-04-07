@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:weather_app/src/models/weather_model.dart';
+import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/forecast_widget.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 import 'package:weather_app/src/widgets/weather_widget.dart';
@@ -10,15 +12,16 @@ class WeatherView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = weatherInfo.current.isDay == 0
+        ? Theme.of(context).primaryColorDark
+        : Theme.of(context).primaryColor;
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: color,
       child: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              
-            },
-            child: buildCurrentInfo(),
+            onTap: () {},
+            child: buildCurrentInfo(context),
           ),
           Expanded(
             child: Container(),
@@ -28,42 +31,52 @@ class WeatherView extends StatelessWidget {
             child: Container(),
           ),
           buildInfoWeather(),
-          Expanded(
-            child: Container(),
-          ),
         ],
       ),
     );
   }
 
-  Column buildCurrentInfo() {
+  Column buildCurrentInfo(BuildContext context) {
     return Column(
       children: <Widget>[
-        Image.network(
-          weatherInfo.current.condition.icon,
-          scale: 0.5,
-        ),
-        buildLocationDate(),
+        buildIconAnimation(),
+        buildLocationDate(context),
         Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: <Widget>[
-            buildCurrentTemperature(),
-            buildMinMax(),
+            buildCurrentTemperature(context),
+            buildMinMax(context),
           ],
         ),
       ],
     );
   }
 
-  Container buildCurrentTemperature() {
+  Widget buildIconAnimation() {
+    final int code = weatherInfo.current.condition.code;
+    final int isDay = weatherInfo.current.isDay;
+    print("${weatherInfo.location.name}: $code - $isDay");
+    final String path = assetsLibrary.getAnimation(code, isDay);
+    print(path);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 18.0),
+      child: Container(
+        height: 128.0,
+        width: 128.0,
+        child: FlareActor(
+          path,
+          animation: "go",
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Container buildCurrentTemperature(BuildContext context) {
     return Container(
       child: Text(
         weatherInfo.current.temperature.round().toString(),
-        style: TextStyle(
-          fontSize: 150.0,
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.display4,
       ),
     );
   }
@@ -87,7 +100,6 @@ class WeatherView extends StatelessWidget {
           MyVerticalDivider(
             height: 70.0,
             width: 2.0,
-            color: Colors.white70,
           ),
           ForecastWidget(
             title: 'Rain',
@@ -97,7 +109,6 @@ class WeatherView extends StatelessWidget {
           MyVerticalDivider(
             height: 70.0,
             width: 2.0,
-            color: Colors.white70,
           ),
           ForecastWidget(
             title: 'UV',
@@ -111,7 +122,7 @@ class WeatherView extends StatelessWidget {
 
   Container buildForecastItems() {
     return Container(
-      height: 80.0,
+      height: 90.0,
       padding: EdgeInsets.only(left: 15.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -125,63 +136,46 @@ class WeatherView extends StatelessWidget {
     );
   }
 
-  Row buildMinMax() {
+  Row buildMinMax(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(
           Icons.arrow_upward,
-          color: Colors.white70,
         ),
         Text(
           '${weatherInfo.forecast.forecastdays[0].day.maxtemp.round()}°',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-          ),
+          style: Theme.of(context).textTheme.body1,
         ),
         SizedBox(
           width: 8.0,
         ),
         Icon(
           Icons.arrow_downward,
-          color: Colors.white70,
         ),
         Text(
           '${weatherInfo.forecast.forecastdays[0].day.mintemp.round()}°',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-          ),
+          style: Theme.of(context).textTheme.body1,
         ),
       ],
     );
   }
 
-  Container buildLocationDate() {
+  Container buildLocationDate(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
           Text(
             '${weatherInfo.location.name}, ${weatherInfo.location.country}',
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.body2,
           ),
           SizedBox(
             height: 4.0,
           ),
           Text(
             weatherInfo.location.localtime,
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white54,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.body1,
           ),
         ],
       ),

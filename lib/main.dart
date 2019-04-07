@@ -16,17 +16,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MyWeather',
       theme: ThemeData(
-        primaryColor: Colors.blue[700],
+        primaryColor: Colors.lightBlue,
+        primaryColorDark: Colors.indigo[800],
         accentColor: Colors.blue[100],
         textTheme: TextTheme(
           body1: TextStyle(
-            color: Colors.white70,
+            color: Colors.white,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w300,
           ),
           body2: TextStyle(
-            color: Colors.white70,
+            color: Colors.white,
+            fontSize: 20.0,
           ),
-          display3: TextStyle(
-            color: Colors.white70,
+          display4: TextStyle(
+            color: Colors.white,
+            fontSize: 150.0,
+            // fontWeight: FontWeight.w400,
+          ),
+          subtitle: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
           ),
         ),
         iconTheme: IconThemeData(

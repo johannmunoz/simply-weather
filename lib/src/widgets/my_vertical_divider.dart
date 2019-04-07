@@ -16,7 +16,7 @@ class MyVerticalDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: margin),
-      height: 70.0,
+      height: 90.0,
       width: 1.0,
       color: Colors.white70,
     );

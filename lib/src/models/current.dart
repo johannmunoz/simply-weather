@@ -4,14 +4,15 @@ class Current {
   final int humidity;
   final double precipitation;
   final double uv;
+  final int isDay;
 
-  Current({
-    this.temperature,
-    this.condition,
-    this.humidity,
-    this.precipitation,
-    this.uv,
-  });
+  Current(
+      {this.temperature,
+      this.condition,
+      this.humidity,
+      this.precipitation,
+      this.uv,
+      this.isDay});
 
   factory Current.fromJson(Map<String, dynamic> parsedJson) {
     return Current(
@@ -20,6 +21,7 @@ class Current {
       humidity: parsedJson['humidity'],
       precipitation: parsedJson['precip_mm'],
       uv: parsedJson['uv'],
+      isDay: parsedJson['is_day'],
     );
   }
 }
@@ -27,14 +29,16 @@ class Current {
 class Condition {
   final String text;
   final String icon;
+  final int code;
 
-  Condition({this.text, this.icon});
+  Condition({this.text, this.icon, this.code});
 
   factory Condition.fromJson(Map<String, dynamic> parsedJson) {
     final formatedUrl = 'http:' + parsedJson['icon'];
     return Condition(
       text: parsedJson['text'],
       icon: formatedUrl,
+      code: parsedJson['code'],
     );
   }
 }

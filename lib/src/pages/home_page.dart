@@ -32,16 +32,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            tooltip: "Manage locations",
-            onPressed: () => Navigator.pushNamed(context, '/manage-locations'),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: Icon(Icons.settings),
+      //       tooltip: "Manage locations",
+      //       onPressed: () => Navigator.pushNamed(context, '/manage-locations'),
+      //     ),
+      //   ],
+      // ),
       body: StreamBuilder(
         stream: bloc.getListWeather,
         builder: (context, AsyncSnapshot<List<WeatherModel>> snapshot) {

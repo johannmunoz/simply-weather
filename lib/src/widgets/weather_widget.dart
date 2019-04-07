@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/models/forecastday.dart';
+import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 
 class WeatherWidget extends StatelessWidget {
@@ -11,6 +12,8 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int code = forecastday.day.condition.code;
+    final String path = assetsLibrary.getIcon(code);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.0),
       child: Row(
@@ -19,11 +22,14 @@ class WeatherWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 forecastday.date,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.subtitle,
               ),
-              Image.network(
-                forecastday.day.condition.icon,
-                scale: 1.8,
+              SizedBox(
+                height: 6.0,
+              ),
+              Image.asset(
+                path,
+                scale: 1.2,
               ),
               Expanded(
                 child: Container(),
@@ -32,29 +38,29 @@ class WeatherWidget extends StatelessWidget {
                 children: <Widget>[
                   Icon(
                     Icons.arrow_upward,
-                    color: Colors.white70,
+                    size: 16.0,
                   ),
                   Text(
                     forecastday.day.maxtemp.round().toString() + '°',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.subtitle,
                   ),
                   SizedBox(
                     width: 2.0,
                   ),
                   Icon(
                     Icons.arrow_downward,
-                    color: Colors.white70,
+                    size: 16.0,
                   ),
                   Text(
                     forecastday.day.mintemp.round().toString() + '°',
-                    style: Theme.of(context).textTheme.body2,
+                    style: Theme.of(context).textTheme.subtitle,
                   ),
                 ],
               ),
             ],
           ),
           MyVerticalDivider(
-            height: 80,
+            height: 90,
             color: Colors.white70,
             margin: 10.0,
           ),

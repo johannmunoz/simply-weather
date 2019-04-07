@@ -20,18 +20,13 @@ class ForecastWidget extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white70,
-              fontWeight: FontWeight.w700,
-            ),
+            style: Theme.of(context).textTheme.body2,
           ),
           SizedBox(
             height: 5.0,
           ),
           Icon(
             icon,
-            color: Colors.white70,
             size: 45.0,
           ),
           SizedBox(
@@ -39,7 +34,7 @@ class ForecastWidget extends StatelessWidget {
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.body2,
           ),
         ],
       ),
