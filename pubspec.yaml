@@ -78,6 +78,10 @@ flutter:
    - assets/icon/thundery_rainy_day.png
    - assets/icon/thundery_rainy_night.png
    - assets/icon/windy.png
+
+   - assets/icon/humidity_icon.png
+   - assets/icon/rain_icon.png
+   - assets/icon/uv_icon.png
    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -90,16 +94,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Regular.ttf
+        - asset: fonts/Montserrat-Bold.ttf
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,

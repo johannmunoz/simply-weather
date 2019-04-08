@@ -16,9 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MyWeather',
       theme: ThemeData(
-        primaryColor: Colors.lightBlue,
+        primaryColor: Colors.blue[700],
         primaryColorDark: Colors.indigo[800],
         accentColor: Colors.blue[100],
+        fontFamily: 'Montserrat',
         textTheme: TextTheme(
           body1: TextStyle(
             color: Colors.white,
@@ -32,7 +33,6 @@ class MyApp extends StatelessWidget {
           display4: TextStyle(
             color: Colors.white,
             fontSize: 150.0,
-            // fontWeight: FontWeight.w400,
           ),
           subtitle: TextStyle(
             color: Colors.white,

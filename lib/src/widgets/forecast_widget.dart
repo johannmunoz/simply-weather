@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class ForecastWidget extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String image;
   final String value;
 
   const ForecastWidget({
     Key key,
     this.title,
-    this.icon,
+    this.image,
     this.value,
   }) : super(key: key);
 
@@ -22,15 +22,12 @@ class ForecastWidget extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.body2,
           ),
-          SizedBox(
-            height: 5.0,
-          ),
-          Icon(
-            icon,
-            size: 45.0,
-          ),
-          SizedBox(
-            height: 5.0,
+          Container(
+            width: 60.0,
+            height: 60.0,
+            child: Image.asset(
+              image,
+            ),
           ),
           Text(
             value,

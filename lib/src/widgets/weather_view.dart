@@ -19,10 +19,20 @@ class WeatherView extends StatelessWidget {
       color: color,
       child: Column(
         children: <Widget>[
-          GestureDetector(
-            onTap: () {},
-            child: buildCurrentInfo(context),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(),
+              ),
+              IconButton(
+                icon: Icon(Icons.settings),
+                tooltip: "Manage locations",
+                onPressed: () =>
+                    Navigator.pushNamed(context, '/manage-locations'),
+              ),
+            ],
           ),
+          buildCurrentInfo(context),
           Expanded(
             child: Container(),
           ),
@@ -55,9 +65,7 @@ class WeatherView extends StatelessWidget {
   Widget buildIconAnimation() {
     final int code = weatherInfo.current.condition.code;
     final int isDay = weatherInfo.current.isDay;
-    print("${weatherInfo.location.name}: $code - $isDay");
     final String path = assetsLibrary.getAnimation(code, isDay);
-    print(path);
     return Padding(
       padding: const EdgeInsets.only(bottom: 18.0),
       child: Container(
@@ -94,7 +102,7 @@ class WeatherView extends StatelessWidget {
         children: <Widget>[
           ForecastWidget(
             title: 'Humidity',
-            icon: Icons.cloud_queue,
+            image: 'assets/icon/humidity_icon.png',
             value: weatherInfo.current.humidity.toString() + ' %',
           ),
           MyVerticalDivider(
@@ -103,7 +111,7 @@ class WeatherView extends StatelessWidget {
           ),
           ForecastWidget(
             title: 'Rain',
-            icon: Icons.invert_colors,
+            image: 'assets/icon/rain_icon.png',
             value: weatherInfo.current.precipitation.toString() + ' mm',
           ),
           MyVerticalDivider(
@@ -112,7 +120,7 @@ class WeatherView extends StatelessWidget {
           ),
           ForecastWidget(
             title: 'UV',
-            icon: Icons.wb_sunny,
+            image: 'assets/icon/uv_icon.png',
             value: weatherInfo.current.uv.toString(),
           ),
         ],
