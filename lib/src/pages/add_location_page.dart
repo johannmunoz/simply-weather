@@ -58,79 +58,83 @@ class _AddLocationPage extends State<AddLocationPage> {
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: bloc.getListLocations,
-        builder: (context, AsyncSnapshot<SearchModel> snapshot) {
-          if (!snapshot.hasData) {
-            if (_filter.text.isEmpty) {
+      body: SafeArea(
+        child: StreamBuilder(
+          stream: bloc.getListLocations,
+          builder: (context, AsyncSnapshot<SearchModel> snapshot) {
+            if (!snapshot.hasData) {
+              if (_filter.text.isEmpty) {
+                return Container(
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    'Type a location',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              }
+              return Container(
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.only(top: 20.0),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: 40.0,
+                  width: 40.0,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            _locations = snapshot.data.locations;
+
+            if (_locations.isEmpty) {
               return Container(
                 alignment: Alignment.topCenter,
                 padding: EdgeInsets.only(top: 20.0),
                 child: Text(
-                  'Type a location',
+                  'No values to show',
                   style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
               );
             }
-            return Container(
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.only(top: 20.0),
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-                height: 40.0,
-                width: 40.0,
-              ),
+            return ListView.builder(
+              itemCount: _locations.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    List<String> locationsStored =
+                        prefs.getStringList('locations') ?? [];
+                    final List<String> wholeLocation =
+                        _locations[index].name.split(",");
+                    final String city = wholeLocation[0];
+                    final String country =
+                        wholeLocation[wholeLocation.length - 1];
+                    locationsStored.add('$city, $country');
+                    await prefs.setStringList('locations', locationsStored);
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/", (Route<dynamic> route) => false);
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(_locations[index].name),
+                      ),
+                      Divider(),
+                    ],
+                  ),
+                );
+              },
             );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          _locations = snapshot.data.locations;
-
-          if (_locations.isEmpty) {
-            return Container(
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.only(top: 20.0),
-              child: Text(
-                'No values to show',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: _locations.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-
-                  List<String> locationsStored =
-                      prefs.getStringList('locations') ?? [];
-                  final List<String> wholeLocation =
-                      _locations[index].name.split(",");
-                  final String city = wholeLocation[0];
-                  locationsStored.add(city);
-                  await prefs.setStringList('locations', locationsStored);
-
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, "/", (Route<dynamic> route) => false);
-                },
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(_locations[index].name),
-                    ),
-                    Divider(),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+          },
+        ),
       ),
     );
   }

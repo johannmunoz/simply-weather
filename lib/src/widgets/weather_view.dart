@@ -15,23 +15,12 @@ class WeatherView extends StatelessWidget {
     final Color color = weatherInfo.current.isDay == 0
         ? Theme.of(context).primaryColorDark
         : Theme.of(context).primaryColor;
+
     return Container(
       color: color,
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(),
-              ),
-              IconButton(
-                icon: Icon(Icons.settings),
-                tooltip: "Manage locations",
-                onPressed: () =>
-                    Navigator.pushNamed(context, '/manage-locations'),
-              ),
-            ],
-          ),
+          buildTopBar(context),
           buildCurrentInfo(context),
           Expanded(
             child: Container(),
@@ -43,6 +32,21 @@ class WeatherView extends StatelessWidget {
           buildInfoWeather(),
         ],
       ),
+    );
+  }
+
+  Row buildTopBar(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(),
+        ),
+        IconButton(
+          icon: Icon(Icons.settings),
+          tooltip: "Manage locations",
+          onPressed: () => Navigator.pushNamed(context, '/manage-locations'),
+        ),
+      ],
     );
   }
 
@@ -177,6 +181,7 @@ class WeatherView extends StatelessWidget {
           Text(
             '${weatherInfo.location.name}, ${weatherInfo.location.country}',
             style: Theme.of(context).textTheme.body2,
+            textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 4.0,

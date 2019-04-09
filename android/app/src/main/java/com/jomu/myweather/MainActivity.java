@@ -1,4 +1,4 @@
-package com.example.weatherapp;
+package com.jomu.myweather;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

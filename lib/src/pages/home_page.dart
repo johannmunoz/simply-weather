@@ -32,58 +32,71 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: bloc.getListWeather,
-        builder: (context, AsyncSnapshot<List<WeatherModel>> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-                height: 60.0,
-                width: 60.0,
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else if (snapshot.data.isEmpty) {
-            return Container(
-              color: Theme.of(context).primaryColor,
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text('Please add a location'),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    FlatButton.icon(
-                      color: Theme.of(context).accentColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                      ),
-                      icon: Icon(Icons.add),
-                      label: Text('Add Location'),
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/add-location'),
-                    )
-                  ],
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SafeArea(
+        child: StreamBuilder(
+          stream: bloc.getListWeather,
+          builder: (context, AsyncSnapshot<List<WeatherModel>> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: 60.0,
+                  width: 60.0,
                 ),
-              ),
+              );
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            } else if (snapshot.data.isEmpty) {
+              return Container(
+                color: Theme.of(context).primaryColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text('Please add a location'),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      FlatButton.icon(
+                        color: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
+                        ),
+                        icon: Icon(Icons.add),
+                        label: Text('Add Location'),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/add-location'),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+            return PageView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                page = index;
+                return WeatherView(snapshot.data[index]);
+              },
             );
-          }
-          return PageView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              page = index;
-              return WeatherView(snapshot.data[index]);
-            },
-          );
-        },
+          },
+        ),
       ),
     );
   }
+}
+
+class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Size get preferredSize => Size(0.0, 0.0);
 }

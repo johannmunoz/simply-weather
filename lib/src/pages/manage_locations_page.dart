@@ -69,22 +69,24 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
         title: Text('Manage Locations'),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_location),
+        child: Icon(Icons.add),
         onPressed: () => Navigator.pushNamed(context, '/add-location'),
       ),
-      body: _locations.length > 0
-          ? Scrollbar(
-              child: ReorderableListView(
-                onReorder: _onReorder,
-                children: _locations.map(buildListTile).toList(),
+      body: SafeArea(
+        child: _locations.length > 0
+            ? Scrollbar(
+                child: ReorderableListView(
+                  onReorder: _onReorder,
+                  children: _locations.map(buildListTile).toList(),
+                ),
+              )
+            : Center(
+                child: Text(
+                  'No locations to show',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            )
-          : Center(
-              child: Text(
-                'No locations to show',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
+      ),
     );
   }
 }
