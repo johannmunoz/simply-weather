@@ -14,6 +14,7 @@ class ForecastWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenSize = 22.7 * MediaQuery.of(context).devicePixelRatio;
     return Container(
       width: 100.0,
       child: Column(
@@ -23,8 +24,8 @@ class ForecastWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.body2,
           ),
           Container(
-            width: 60.0,
-            height: 60.0,
+            width: screenSize,
+            height: screenSize,
             child: Image.asset(
               image,
             ),

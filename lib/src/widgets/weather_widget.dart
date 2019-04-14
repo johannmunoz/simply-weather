@@ -12,6 +12,7 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenSize = 3.2 / MediaQuery.of(context).devicePixelRatio;
     final int code = forecastday.day.condition.code;
     final String path = assetsLibrary.getIcon(code);
     return Container(
@@ -29,7 +30,7 @@ class WeatherWidget extends StatelessWidget {
               ),
               Image.asset(
                 path,
-                scale: 1.2,
+                scale: screenSize,
               ),
               Expanded(
                 child: Container(),
@@ -60,7 +61,7 @@ class WeatherWidget extends StatelessWidget {
             ],
           ),
           MyVerticalDivider(
-            height: 90,
+            height: 68,
             color: Colors.white70,
             margin: 10.0,
           ),

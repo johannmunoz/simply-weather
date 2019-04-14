@@ -21,11 +21,15 @@ class WeatherView extends StatelessWidget {
       child: Column(
         children: <Widget>[
           buildTopBar(context),
+          buildIconAnimation(context),
+          Expanded(
+            child: Container(),
+          ),
           buildCurrentInfo(context),
           Expanded(
             child: Container(),
           ),
-          buildForecastItems(),
+          buildForecastItems(context),
           Expanded(
             child: Container(),
           ),
@@ -53,39 +57,42 @@ class WeatherView extends StatelessWidget {
   Column buildCurrentInfo(BuildContext context) {
     return Column(
       children: <Widget>[
-        buildIconAnimation(),
-        buildLocationDate(context),
         Stack(
-          alignment: AlignmentDirectional.bottomCenter,
+          alignment: AlignmentDirectional.topCenter,
           children: <Widget>[
-            buildCurrentTemperature(context),
-            buildMinMax(context),
+            buildLocationDate(context),
+            Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: <Widget>[
+                buildCurrentTemperature(context),
+                buildMinMax(context),
+              ],
+            ),
           ],
         ),
       ],
     );
   }
 
-  Widget buildIconAnimation() {
+  Widget buildIconAnimation(BuildContext context) {
+    final double screenSize = MediaQuery.of(context).devicePixelRatio * 48;
     final int code = weatherInfo.current.condition.code;
     final int isDay = weatherInfo.current.isDay;
     final String path = assetsLibrary.getAnimation(code, isDay);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18.0),
-      child: Container(
-        height: 128.0,
-        width: 128.0,
-        child: FlareActor(
-          path,
-          animation: "go",
-          fit: BoxFit.contain,
-        ),
+    return Container(
+      height: screenSize,
+      width: screenSize,
+      child: FlareActor(
+        path,
+        animation: "go",
+        fit: BoxFit.contain,
       ),
     );
   }
 
   Container buildCurrentTemperature(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 30.0),
       child: Text(
         weatherInfo.current.temperature.round().toString(),
         style: Theme.of(context).textTheme.display4,
@@ -132,9 +139,10 @@ class WeatherView extends StatelessWidget {
     );
   }
 
-  Container buildForecastItems() {
+  Container buildForecastItems(BuildContext context) {
+    final double screenSize = 80 + 15.4*(MediaQuery.of(context).devicePixelRatio - 2);
     return Container(
-      height: 90.0,
+      height: screenSize,
       padding: EdgeInsets.only(left: 15.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

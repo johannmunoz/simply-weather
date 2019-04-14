@@ -17,9 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _getLocations();
-
     super.initState();
+    _getLocations();
   }
 
   void _getLocations() async {
