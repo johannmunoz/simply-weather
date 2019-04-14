@@ -69,6 +69,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
         title: Text('Manage Locations'),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Add a new location',
         child: Icon(Icons.add),
         onPressed: () => Navigator.pushNamed(context, '/add-location'),
       ),

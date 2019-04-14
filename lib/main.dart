@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather_app/src/pages/about_page.dart';
 import 'package:weather_app/src/pages/add_location_page.dart';
 import 'package:weather_app/src/pages/home_page.dart';
 import 'package:weather_app/src/pages/manage_locations_page.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => HomePage(),
         '/manage-locations': (context) => ManageLocationsPage(),
         '/add-location': (context) => AddLocationPage(),
+        '/about': (context) => AboutPage(),
       },
     );
   }

@@ -32,7 +32,7 @@ class _WeatherViewState extends State<WeatherView>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 800),
     );
     _positionOffset = _controller.drive(_positionTween);
     _controller.forward();
@@ -81,7 +81,12 @@ class _WeatherViewState extends State<WeatherView>
           child: Container(),
         ),
         IconButton(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.info_outline),
+          tooltip: "About",
+          onPressed: () => Navigator.pushNamed(context, '/about'),
+        ),
+        IconButton(
+          icon: Icon(Icons.edit),
           tooltip: "Manage locations",
           onPressed: () => Navigator.pushNamed(context, '/manage-locations'),
         ),
