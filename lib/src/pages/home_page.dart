@@ -80,7 +80,9 @@ class _HomePageState extends State<HomePage> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 page = index;
-                return WeatherView(snapshot.data[index]);
+                return WeatherView(
+                  weatherInfo: snapshot.data[index],
+                );
               },
             );
           },
