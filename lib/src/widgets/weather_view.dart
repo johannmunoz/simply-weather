@@ -159,7 +159,7 @@ class _WeatherViewState extends State<WeatherView>
         children: <Widget>[
           ForecastWidget(
             title: 'Humidity',
-            image: 'assets/icon/humidity_icon.png',
+            image: 'assets/icon/cloudy.png',
             value: widget.weatherInfo.current.humidity.toString() + ' %',
           ),
           MyVerticalDivider(
@@ -168,7 +168,7 @@ class _WeatherViewState extends State<WeatherView>
           ),
           ForecastWidget(
             title: 'Rain',
-            image: 'assets/icon/rain_icon.png',
+            image: 'assets/icon/heavy_rain.png',
             value: widget.weatherInfo.current.precipitation.toString() + ' mm',
           ),
           MyVerticalDivider(
@@ -177,7 +177,7 @@ class _WeatherViewState extends State<WeatherView>
           ),
           ForecastWidget(
             title: 'UV',
-            image: 'assets/icon/uv_icon.png',
+            image: 'assets/icon/sunny.png',
             value: widget.weatherInfo.current.uv.toString(),
           ),
         ],
