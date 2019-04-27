@@ -59,34 +59,39 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context, "/", (Route<dynamic> route) => false),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushReplacementNamed("/", result: true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context, "/", (Route<dynamic> route) => false),
+          ),
+          title: Text('Manage Locations'),
         ),
-        title: Text('Manage Locations'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add a new location',
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.pushNamed(context, '/add-location'),
-      ),
-      body: SafeArea(
-        child: _locations.length > 0
-            ? Scrollbar(
-                child: ReorderableListView(
-                  onReorder: _onReorder,
-                  children: _locations.map(buildListTile).toList(),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Add a new location',
+          child: Icon(Icons.add),
+          onPressed: () => Navigator.pushNamed(context, '/add-location'),
+        ),
+        body: SafeArea(
+          child: _locations.length > 0
+              ? Scrollbar(
+                  child: ReorderableListView(
+                    onReorder: _onReorder,
+                    children: _locations.map(buildListTile).toList(),
+                  ),
+                )
+              : Center(
+                  child: Text(
+                    'No locations to show',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-              )
-            : Center(
-                child: Text(
-                  'No locations to show',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
+        ),
       ),
     );
   }
