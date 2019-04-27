@@ -30,9 +30,9 @@ dev_dependencies:
 flutter_icons:
   android: true 
   ios: true
-  image_path: "assets/icon/icon-app.png"
+  image_path: "assets/main-icon.png"
   adaptive_icon_background: "#FFFAFAFA"
-  adaptive_icon_foreground: "assets/icon/icon-app.png"
+  adaptive_icon_foreground: "assets/main-icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -78,10 +78,6 @@ flutter:
    - assets/icon/thundery_rainy_day.png
    - assets/icon/thundery_rainy_night.png
    - assets/icon/windy.png
-
-   - assets/icon/humidity_icon.png
-   - assets/icon/rain_icon.png
-   - assets/icon/uv_icon.png
    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
