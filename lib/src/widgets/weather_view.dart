@@ -37,7 +37,7 @@ class _WeatherViewState extends State<WeatherView>
   void initState() {
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 600),
     );
     _positionOffset = _controller.drive(_positionTween);
     _controller.forward();

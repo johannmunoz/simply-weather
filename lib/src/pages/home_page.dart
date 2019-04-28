@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 import 'package:weather_app/src/widgets/weather_view.dart';
@@ -12,11 +15,50 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int page = 0;
+  bool _connectionStatus = true;
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
-    bloc.fetchWeatherList();
+    initConnectivity();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> initConnectivity() async {
+    ConnectivityResult result;
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    if (!mounted) {
+      return;
+    }
+
+    _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    switch (result) {
+      case ConnectivityResult.none:
+        setState(() => _connectionStatus = false);
+        break;
+      default:
+        setState(() {
+          _connectionStatus = true;
+          bloc.fetchWeatherList();
+        });
+        break;
+    }
   }
 
   @override
@@ -28,13 +70,17 @@ class _HomePageState extends State<HomePage> {
           stream: bloc.getListWeather,
           builder: (context, AsyncSnapshot<List<WeatherModel>> snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  height: 50.0,
-                  width: 50.0,
-                ),
-              );
+              return _connectionStatus
+                  ? Center(
+                      child: SizedBox(
+                        child: CircularProgressIndicator(),
+                        height: 50.0,
+                        width: 50.0,
+                      ),
+                    )
+                  : Center(
+                      child: Text('No internet connection'),
+                    );
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             } else if (snapshot.data.isEmpty) {
