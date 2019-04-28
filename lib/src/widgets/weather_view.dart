@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/forecast_widget.dart';
@@ -25,6 +28,8 @@ class _WeatherViewState extends State<WeatherView>
     curve: Curves.fastOutSlowIn,
   ));
 
+  bool _circularIndicator = false;
+
   AnimationController _controller;
   Animation<Offset> _positionOffset;
 
@@ -36,6 +41,7 @@ class _WeatherViewState extends State<WeatherView>
     );
     _positionOffset = _controller.drive(_positionTween);
     _controller.forward();
+    _circularIndicator = bloc.updateButton;
     super.initState();
   }
 
@@ -80,11 +86,17 @@ class _WeatherViewState extends State<WeatherView>
         Expanded(
           child: Container(),
         ),
-        IconButton(
-          icon: Icon(Icons.info_outline),
-          tooltip: "About",
-          onPressed: () => Navigator.pushNamed(context, '/about'),
-        ),
+        _circularIndicator
+            ? SizedBox(
+                child: CircularProgressIndicator(),
+                height: 20.0,
+                width: 20.0,
+              )
+            : IconButton(
+                icon: Icon(Icons.update),
+                tooltip: "Update current weather",
+                onPressed: bloc.updateButton ? null : _updateCurrentWeather,
+              ),
         IconButton(
           icon: Icon(Icons.edit),
           tooltip: "Manage locations",
@@ -92,6 +104,20 @@ class _WeatherViewState extends State<WeatherView>
         ),
       ],
     );
+  }
+
+  void _updateCurrentWeather() {
+    bloc.fetchWeatherList();
+    bloc.disableUpdate();
+    setState(() {
+      _circularIndicator = true;
+    });
+    Timer(Duration(seconds: 3), () {
+      bloc.enableUpdate();
+      setState(() {
+        _circularIndicator = false;
+      });
+    });
   }
 
   Column buildCurrentInfo(BuildContext context) {

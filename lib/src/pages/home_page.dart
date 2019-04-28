@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 import 'package:weather_app/src/widgets/weather_view.dart';
@@ -12,20 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _locations = [];
   int page = 0;
 
   @override
   void initState() {
     super.initState();
-    _getLocations();
-  }
-
-  void _getLocations() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    _locations = prefs.getStringList('locations') ?? [];
-    bloc.fetchWeatherList(_locations);
+    bloc.fetchWeatherList();
   }
 
   @override
@@ -40,8 +31,8 @@ class _HomePageState extends State<HomePage> {
               return Center(
                 child: SizedBox(
                   child: CircularProgressIndicator(),
-                  height: 60.0,
-                  width: 60.0,
+                  height: 50.0,
+                  width: 50.0,
                 ),
               );
             } else if (snapshot.hasError) {
@@ -76,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
+            bloc.enableUpdate();
             return PageView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
