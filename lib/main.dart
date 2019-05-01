@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      title: 'SimplyWeather',
+      title: 'Simply Weather',
       theme: buildThemeData(),
       initialRoute: '/',
       routes: {
