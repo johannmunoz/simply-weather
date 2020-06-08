@@ -34,20 +34,20 @@ class MyApp extends StatelessWidget {
       accentColor: Colors.blue[100],
       fontFamily: 'Montserrat',
       textTheme: TextTheme(
-        body1: TextStyle(
+        bodyText2: TextStyle(
           color: Colors.white,
           fontSize: 20.0,
           fontWeight: FontWeight.w300,
         ),
-        body2: TextStyle(
+        bodyText1: TextStyle(
           color: Colors.white,
           fontSize: 20.0,
         ),
-        display4: TextStyle(
+        headline1: TextStyle(
           color: Colors.white,
           fontSize: 150.0,
         ),
-        subtitle: TextStyle(
+        subtitle2: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w400,
         ),

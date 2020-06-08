@@ -23,7 +23,7 @@ class WeatherWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 forecastday.date,
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
               SizedBox(
                 height: 6.0,
@@ -43,7 +43,7 @@ class WeatherWidget extends StatelessWidget {
                   ),
                   Text(
                     forecastday.day.maxtemp.round().toString() + '°',
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                   SizedBox(
                     width: 2.0,
@@ -54,7 +54,7 @@ class WeatherWidget extends StatelessWidget {
                   ),
                   Text(
                     forecastday.day.mintemp.round().toString() + '°',
-                    style: Theme.of(context).textTheme.subtitle,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ],
               ),

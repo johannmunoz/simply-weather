@@ -166,7 +166,7 @@ class _WeatherViewState extends State<WeatherView>
         padding: EdgeInsets.only(top: 30.0),
         child: Text(
           widget.weatherInfo.current.temperature.round().toString(),
-          style: Theme.of(context).textTheme.display4,
+          style: Theme.of(context).textTheme.headline1,
         ),
       ),
     );
@@ -239,7 +239,7 @@ class _WeatherViewState extends State<WeatherView>
         ),
         Text(
           '${widget.weatherInfo.forecast.forecastdays[0].day.maxtemp.round()}°',
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
         SizedBox(
           width: 8.0,
@@ -249,7 +249,7 @@ class _WeatherViewState extends State<WeatherView>
         ),
         Text(
           '${widget.weatherInfo.forecast.forecastdays[0].day.mintemp.round()}°',
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ],
     );
@@ -261,7 +261,7 @@ class _WeatherViewState extends State<WeatherView>
         children: <Widget>[
           Text(
             '${widget.weatherInfo.location.name}, ${widget.weatherInfo.location.country}',
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
             textAlign: TextAlign.center,
           ),
           SizedBox(
@@ -269,7 +269,7 @@ class _WeatherViewState extends State<WeatherView>
           ),
           Text(
             widget.weatherInfo.location.localtime,
-            style: Theme.of(context).textTheme.body1,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
         ],
       ),

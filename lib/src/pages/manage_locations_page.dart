@@ -61,7 +61,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).pushReplacementNamed("/", result: true);
+        return Navigator.of(context).pushReplacementNamed("/", result: true);
       },
       child: Scaffold(
         appBar: AppBar(
