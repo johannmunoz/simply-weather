@@ -74,3 +74,4 @@ build/
 key.properties
 api_key.dart
 
+lib/src/models/weather_model.g.dart
