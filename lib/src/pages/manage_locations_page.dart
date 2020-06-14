@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/src/models/search_model.dart';
 
 class ManageLocationsPage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class ManageLocationsPage extends StatefulWidget {
 }
 
 class _ManageLocationsPageState extends State<ManageLocationsPage> {
-  static List<String> _locations = [];
+  static List<SearchInfo> _locations = [];
 
   @override
   void initState() {
@@ -19,8 +20,12 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
 
   void _getLocations() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> locationsJson = prefs.getStringList('locations') ?? [];
+    final locations =
+        locationsJson.map((location) => SearchInfo.fromJson(location)).toList();
+
     setState(() {
-      _locations = prefs.getStringList('locations') ?? [];
+      _locations = locations;
     });
   }
 
@@ -29,17 +34,18 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
       if (newIndex > oldIndex) {
         newIndex -= 1;
       }
-      final String location = _locations.removeAt(oldIndex);
+      final location = _locations.removeAt(oldIndex);
       _locations.insert(newIndex, location);
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('locations', _locations);
+    prefs.setStringList(
+        'locations', _locations.map((e) => e.toJson()).toList());
   }
 
-  Widget buildListTile(String location) {
+  Widget buildListTile(SearchInfo location) {
     Widget listTile;
     listTile = ListTile(
-      key: Key(location),
+      key: Key(location.id.toString()),
       leading: IconButton(
         icon: Icon(Icons.delete),
         onPressed: () async {
@@ -48,10 +54,11 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
           });
           SharedPreferences prefs = await SharedPreferences.getInstance();
 
-          prefs.setStringList('locations', _locations);
+          prefs.setStringList(
+              'locations', _locations.map((e) => e.toJson()).toList());
         },
       ),
-      title: Text(location),
+      title: Text('${location.name}, ${location.sys.country}'),
       trailing: Icon(Icons.drag_handle),
     );
     return listTile;

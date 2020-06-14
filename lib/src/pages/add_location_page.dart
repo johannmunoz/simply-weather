@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
@@ -13,6 +15,20 @@ class AddLocationPage extends StatefulWidget {
 class _AddLocationPage extends State<AddLocationPage> {
   final TextEditingController _filter = TextEditingController();
   List<SearchInfo> _locations = [];
+  Timer _debounce;
+
+  @override
+  void initState() {
+    _filter.addListener(_onSearchChanged);
+    super.initState();
+  }
+
+  _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
+      if (_filter.text.length > 3) bloc.fetchSearchList(_filter.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +53,6 @@ class _AddLocationPage extends State<AddLocationPage> {
                   ),
                   hintText: 'Search...',
                 ),
-                onChanged: (String value) {
-                  if (value.isNotEmpty && value.length > 3) {
-                    bloc.fetchSearchList(value);
-                  }
-                },
               ),
             ),
           ],
@@ -105,7 +116,8 @@ class _AddLocationPage extends State<AddLocationPage> {
               itemCount: _locations.length,
               itemBuilder: (context, index) {
                 final location = _locations[index];
-                final locationLabel = '${location.name}, ${location.sys.country}';
+                final locationLabel =
+                    '${location.name}, ${location.sys.country}';
                 return GestureDetector(
                   onTap: () async {
                     SharedPreferences prefs =
@@ -134,5 +146,13 @@ class _AddLocationPage extends State<AddLocationPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _filter.removeListener(_onSearchChanged);
+    _filter.dispose();
+    _debounce.cancel();
+    super.dispose();
   }
 }

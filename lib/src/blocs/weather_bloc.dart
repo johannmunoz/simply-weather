@@ -12,10 +12,9 @@ class WeatherBloc {
   final _searchListFetcher = PublishSubject<SearchModel>();
   bool _updateButton = false;
 
-  Observable<List<WeatherItem>> get getListWeather =>
-      _weatherListFetcher.stream;
+  Stream<List<WeatherItem>> get getListWeather => _weatherListFetcher.stream;
 
-  Observable<SearchModel> get getListLocations => _searchListFetcher.stream;
+  Stream<SearchModel> get getListLocations => _searchListFetcher.stream;
 
   bool get updateButton => _updateButton;
 
