@@ -4,15 +4,19 @@ import 'package:weather_app/src/models/search_model.dart';
 import 'dart:convert';
 
 import 'package:weather_app/src/models/weather_model.dart';
+import 'package:weather_app/src/resources/api_key.dart';
 
 class WeatherApiProvider {
   Client client = Client();
-  final _apiKey = 'bebe9d4f178982a3aead9817f8281e7b';
 
-  Future<WeatherModel> fetchWeather(String location) async {
+  final _fetchLocationsEndpoint = 'http://api.openweathermap.org/data/2.5/find';
+  final _fetchWeatherEndpoint =
+      'http://api.openweathermap.org/data/2.5/onecall';
+
+  Future<WeatherModel> fetchWeather(double lat, double long) async {
     try {
       final response = await client.get(
-          "http://api.weatherstack.com/forecast.json?access_key=$_apiKey&query=$location&days=7");
+          "$_fetchWeatherEndpoint?lat=$lat&lon=$long&exclude=minutely,hourly&appid=$apiKey");
       if (response.statusCode == 200) {
         // If the call to the server was successful, parse the JSON
         return WeatherModel.fromJson(json.decode(response.body));
@@ -29,12 +33,13 @@ class WeatherApiProvider {
 
   Future<SearchModel> fetchLocations(String query) async {
     try {
-      final response = await client.get(
-          "http://api.weatherstack.com/autocomplete?access_key=$_apiKey&query=$query");
+      final response =
+          await client.get("$_fetchLocationsEndpoint?q=$query&appid=$apiKey");
 
       if (response.statusCode == 200) {
         // If the call to the server was successful, parse the JSON
-        return SearchModel.fromJson(json.decode(response.body));
+        print(json.decode(response.body));
+        return SearchModel.fromJson(response.body);
       } else {
         // If that call was not successful, throw an error.
         print(response.body);
