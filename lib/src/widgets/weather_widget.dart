@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/models/forecastday.dart';
+import 'package:weather_app/src/models/weather_Item.dart';
 import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 
 class WeatherWidget extends StatelessWidget {
-  final Forecastday forecastday;
+  final ForecastItem forecastInfo;
   const WeatherWidget({
     Key key,
-    this.forecastday,
+    this.forecastInfo,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double screenSize = 3.2 / MediaQuery.of(context).devicePixelRatio;
-    final int code = forecastday.day.condition.code;
-    final String path = assetsLibrary.getIcon(code);
+    final String iconCode = forecastInfo.iconCode;
+    final String path = assetsLibrary.getIcon(iconCode);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.0),
       child: Row(
@@ -22,7 +22,7 @@ class WeatherWidget extends StatelessWidget {
           Column(
             children: <Widget>[
               Text(
-                forecastday.date,
+                forecastInfo.date,
                 style: Theme.of(context).textTheme.subtitle2,
               ),
               SizedBox(
@@ -42,7 +42,7 @@ class WeatherWidget extends StatelessWidget {
                     size: 16.0,
                   ),
                   Text(
-                    forecastday.day.maxtemp.round().toString() + '°',
+                    forecastInfo.maxTemp,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   SizedBox(
@@ -53,7 +53,7 @@ class WeatherWidget extends StatelessWidget {
                     size: 16.0,
                   ),
                   Text(
-                    forecastday.day.mintemp.round().toString() + '°',
+                    forecastInfo.minTemp,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ],

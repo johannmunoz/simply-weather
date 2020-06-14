@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
-import 'package:weather_app/src/models/weather_model.dart';
+import 'package:weather_app/src/models/weather_Item.dart';
 import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/forecast_widget.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';
 import 'package:weather_app/src/widgets/weather_widget.dart';
 
 class WeatherView extends StatefulWidget {
-  final WeatherModel weatherInfo;
+  final WeatherItem weatherInfo;
   const WeatherView({Key key, this.weatherInfo}) : super(key: key);
 
   @override
@@ -53,9 +53,10 @@ class _WeatherViewState extends State<WeatherView>
 
   @override
   Widget build(BuildContext context) {
-    final Color color = widget.weatherInfo.current.isDay == 0
-        ? Theme.of(context).primaryColorDark
-        : Theme.of(context).primaryColor;
+    final isDay = widget.weatherInfo.current.isDay;
+    final Color color = isDay
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).primaryColorDark;
 
     return Container(
       color: color,
@@ -142,9 +143,8 @@ class _WeatherViewState extends State<WeatherView>
 
   Widget buildIconAnimation(BuildContext context) {
     final double screenSize = MediaQuery.of(context).devicePixelRatio * 48;
-    final int code = widget.weatherInfo.current.condition.code;
-    final int isDay = widget.weatherInfo.current.isDay;
-    final String path = assetsLibrary.getAnimation(code, isDay);
+    final String iconCode = widget.weatherInfo.current.iconCode;
+    final String path = assetsLibrary.getAnimation(iconCode);
     return SlideTransition(
       position: _positionOffset,
       child: Container(
@@ -165,7 +165,7 @@ class _WeatherViewState extends State<WeatherView>
       child: Container(
         padding: EdgeInsets.only(top: 30.0),
         child: Text(
-          widget.weatherInfo.current.temperature.round().toString(),
+          widget.weatherInfo.current.temp,
           style: Theme.of(context).textTheme.headline1,
         ),
       ),
@@ -186,7 +186,7 @@ class _WeatherViewState extends State<WeatherView>
           ForecastWidget(
             title: 'Humidity',
             image: 'assets/icon/cloudy.png',
-            value: widget.weatherInfo.current.humidity.toString() + ' %',
+            value: widget.weatherInfo.current.humidity,
           ),
           MyVerticalDivider(
             height: 70.0,
@@ -195,7 +195,7 @@ class _WeatherViewState extends State<WeatherView>
           ForecastWidget(
             title: 'Rain',
             image: 'assets/icon/heavy_rain.png',
-            value: widget.weatherInfo.current.precipitation.toString() + ' mm',
+            value: widget.weatherInfo.forecast.first.rain,
           ),
           MyVerticalDivider(
             height: 70.0,
@@ -204,7 +204,7 @@ class _WeatherViewState extends State<WeatherView>
           ForecastWidget(
             title: 'UV',
             image: 'assets/icon/sunny.png',
-            value: widget.weatherInfo.current.uv.toString(),
+            value: widget.weatherInfo.current.uv,
           ),
         ],
       ),
@@ -219,10 +219,10 @@ class _WeatherViewState extends State<WeatherView>
       padding: EdgeInsets.only(left: 15.0),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: widget.weatherInfo.forecast.forecastdays.length - 1,
+        itemCount: widget.weatherInfo.forecast.length - 1,
         itemBuilder: (context, index) {
           return WeatherWidget(
-            forecastday: widget.weatherInfo.forecast.forecastdays[index + 1],
+            forecastInfo: widget.weatherInfo.forecast[index + 1],
           );
         },
       ),
@@ -238,7 +238,7 @@ class _WeatherViewState extends State<WeatherView>
           Icons.arrow_upward,
         ),
         Text(
-          '${widget.weatherInfo.forecast.forecastdays[0].day.maxtemp.round()}°',
+          widget.weatherInfo.forecast.first.maxTemp,
           style: Theme.of(context).textTheme.bodyText2,
         ),
         SizedBox(
@@ -248,7 +248,7 @@ class _WeatherViewState extends State<WeatherView>
           Icons.arrow_downward,
         ),
         Text(
-          '${widget.weatherInfo.forecast.forecastdays[0].day.mintemp.round()}°',
+          widget.weatherInfo.forecast.first.minTemp,
           style: Theme.of(context).textTheme.bodyText2,
         ),
       ],
@@ -260,7 +260,7 @@ class _WeatherViewState extends State<WeatherView>
       child: Column(
         children: <Widget>[
           Text(
-            '${widget.weatherInfo.location.name}, ${widget.weatherInfo.location.country}',
+            '${widget.weatherInfo.location}, ${widget.weatherInfo.country}',
             style: Theme.of(context).textTheme.bodyText1,
             textAlign: TextAlign.center,
           ),
@@ -268,7 +268,7 @@ class _WeatherViewState extends State<WeatherView>
             height: 4.0,
           ),
           Text(
-            widget.weatherInfo.location.localtime,
+            widget.weatherInfo.current.date,
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ],

@@ -38,7 +38,7 @@ class _AddLocationPage extends State<AddLocationPage> {
                   hintText: 'Search...',
                 ),
                 onChanged: (String value) {
-                  if (value.isNotEmpty) {
+                  if (value.isNotEmpty && value.length > 3) {
                     bloc.fetchSearchList(value);
                   }
                 },
@@ -87,7 +87,7 @@ class _AddLocationPage extends State<AddLocationPage> {
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             }
-            _locations = snapshot.data.locations;
+            _locations = snapshot.data.list;
 
             if (_locations.isEmpty) {
               return Container(
@@ -104,6 +104,8 @@ class _AddLocationPage extends State<AddLocationPage> {
             return ListView.builder(
               itemCount: _locations.length,
               itemBuilder: (context, index) {
+                final location = _locations[index];
+                final locationLabel = '${location.name}, ${location.sys.country}';
                 return GestureDetector(
                   onTap: () async {
                     SharedPreferences prefs =
@@ -111,12 +113,7 @@ class _AddLocationPage extends State<AddLocationPage> {
 
                     List<String> locationsStored =
                         prefs.getStringList('locations') ?? [];
-                    final List<String> wholeLocation =
-                        _locations[index].name.split(",");
-                    final String city = wholeLocation[0];
-                    final String country =
-                        wholeLocation[wholeLocation.length - 1];
-                    locationsStored.add('$city, $country');
+                    locationsStored.add(location.toJson());
                     await prefs.setStringList('locations', locationsStored);
 
                     Navigator.pushNamedAndRemoveUntil(
@@ -125,7 +122,7 @@ class _AddLocationPage extends State<AddLocationPage> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        title: Text(_locations[index].name),
+                        title: Text(locationLabel),
                       ),
                       Divider(),
                     ],

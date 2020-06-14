@@ -7,6 +7,6 @@ import 'package:weather_app/src/resources/weather_api_provider.dart';
 class Repository {
   final weatherApiProvider = WeatherApiProvider();
 
-  Future<WeatherModel> fetchWeather(String location) => weatherApiProvider.fetchWeather(location);
+  Future<WeatherModel> fetchWeather(double lat, double long) => weatherApiProvider.fetchWeather(lat, long);
   Future<SearchModel> fetchLocations(String query) => weatherApiProvider.fetchLocations(query);
 }

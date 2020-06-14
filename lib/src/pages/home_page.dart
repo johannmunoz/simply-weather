@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
-import 'package:weather_app/src/models/weather_model.dart';
+import 'package:weather_app/src/models/weather_Item.dart';
 import 'package:weather_app/src/widgets/weather_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: StreamBuilder(
           stream: bloc.getListWeather,
-          builder: (context, AsyncSnapshot<List<WeatherModel>> snapshot) {
+          builder: (context, AsyncSnapshot<List<WeatherItem>> snapshot) {
             if (!snapshot.hasData) {
               return _connectionStatus
                   ? Center(
@@ -118,6 +118,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 page = index;
+
                 return WeatherView(
                   weatherInfo: snapshot.data[index],
                 );
