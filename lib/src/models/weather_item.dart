@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 
 import 'package:weather_app/src/models/search_model.dart';
 import 'package:weather_app/src/models/weather_model.dart';
 
 class WeatherItem {
+  int id;
   String location;
   String country;
   CurrentItem current;
   List<ForecastItem> forecast;
   WeatherItem({
+    this.id,
     this.location,
     this.country,
     this.current,
@@ -16,6 +20,7 @@ class WeatherItem {
   });
   factory WeatherItem.fromModel(WeatherModel weather, SearchInfo search) {
     return WeatherItem(
+      id: search.id,
       location: search.name,
       country: search.sys.country,
       current: CurrentItem(
@@ -46,6 +51,33 @@ class WeatherItem {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'location': location,
+      'country': country,
+      'current': current?.toMap(),
+      'forecast': forecast?.map((x) => x?.toMap())?.toList(),
+    };
+  }
+
+  static WeatherItem fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return WeatherItem(
+      id: map['id'],
+      location: map['location'],
+      country: map['country'],
+      current: CurrentItem.fromMap(map['current']),
+      forecast: List<ForecastItem>.from(
+          map['forecast']?.map((x) => ForecastItem.fromMap(x))),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  static WeatherItem fromJson(String source) => fromMap(json.decode(source));
 }
 
 class CurrentItem {
@@ -71,6 +103,42 @@ class CurrentItem {
     this.windDeg,
     this.iconCode,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date': date,
+      'isDay': isDay,
+      'temp': temp,
+      'feelsLikeTemp': feelsLikeTemp,
+      'pressure': pressure,
+      'humidity': humidity,
+      'uv': uv,
+      'windSpeed': windSpeed,
+      'windDeg': windDeg,
+      'iconCode': iconCode,
+    };
+  }
+
+  static CurrentItem fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return CurrentItem(
+      date: map['date'],
+      isDay: map['isDay'],
+      temp: map['temp'],
+      feelsLikeTemp: map['feelsLikeTemp'],
+      pressure: map['pressure'],
+      humidity: map['humidity'],
+      uv: map['uv'],
+      windSpeed: map['windSpeed'],
+      windDeg: map['windDeg'],
+      iconCode: map['iconCode'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  static CurrentItem fromJson(String source) => fromMap(json.decode(source));
 }
 
 class ForecastItem {
@@ -98,6 +166,44 @@ class ForecastItem {
     this.rain,
     this.iconCode,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date': date,
+      'minTemp': minTemp,
+      'maxTemp': maxTemp,
+      'pressure': pressure,
+      'humidity': humidity,
+      'uv': uv,
+      'windSpeed': windSpeed,
+      'windDeg': windDeg,
+      'clouds': clouds,
+      'rain': rain,
+      'iconCode': iconCode,
+    };
+  }
+
+  static ForecastItem fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return ForecastItem(
+      date: map['date'],
+      minTemp: map['minTemp'],
+      maxTemp: map['maxTemp'],
+      pressure: map['pressure'],
+      humidity: map['humidity'],
+      uv: map['uv'],
+      windSpeed: map['windSpeed'],
+      windDeg: map['windDeg'],
+      clouds: map['clouds'],
+      rain: map['rain'],
+      iconCode: map['iconCode'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  static ForecastItem fromJson(String source) => fromMap(json.decode(source));
 }
 
 bool _getIsDay(CurrentInfo weatherInfo) {

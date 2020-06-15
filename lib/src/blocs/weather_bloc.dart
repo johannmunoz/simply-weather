@@ -28,10 +28,31 @@ class WeatherBloc {
 
   fetchWeatherList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    DateTime timeNow = DateTime.now();
 
     List<String> locationsJson = prefs.getStringList('locations') ?? [];
+    List<String> fetchedWeatherListJson =
+        prefs.getStringList('weatherList') ?? [];
+    String lastUpdateJson = prefs.getString('lastUpdate');
+
+    if (lastUpdateJson != null) {
+      DateTime lastUpdate = DateTime.parse(lastUpdateJson);
+      if (timeNow.isBefore(lastUpdate.add(Duration(hours: 1)))) {
+        if (fetchedWeatherListJson.isNotEmpty && locationsJson.isNotEmpty) {
+          if (fetchedWeatherListJson.length == locationsJson.length) {
+            final weatherList = fetchedWeatherListJson
+                .map((e) => WeatherItem.fromJson(e))
+                .toList();
+            _weatherListFetcher.sink.add(weatherList);
+            return;
+          }
+        }
+      }
+    }
+
     final locations =
         locationsJson.map((location) => SearchInfo.fromJson(location)).toList();
+
     List<WeatherItem> weatherList =
         await Future.wait(locations.map((location) async {
       final weather = await _repository.fetchWeather(
@@ -39,7 +60,13 @@ class WeatherBloc {
       return WeatherItem.fromModel(weather, location);
     }));
 
+    final weatherListJson = weatherList.map((e) => e.toJson()).toList();
+
+    prefs.setStringList('weatherList', weatherListJson);
+    prefs.setString('lastUpdate', timeNow.toIso8601String());
+
     _weatherListFetcher.sink.add(weatherList);
+    return;
   }
 
   fetchSearchList(String location) async {
