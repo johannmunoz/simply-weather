@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
-import 'package:weather_app/src/models/weather_Item.dart';
+import 'package:weather_app/src/models/weather_item.dart';
 import 'package:weather_app/src/resources/assets_library.dart';
 import 'package:weather_app/src/widgets/forecast_widget.dart';
 import 'package:weather_app/src/widgets/my_vertical_divider.dart';

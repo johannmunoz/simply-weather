@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/src/blocs/weather_bloc.dart';
-import 'package:weather_app/src/models/weather_Item.dart';
+import 'package:weather_app/src/models/weather_item.dart';
 import 'package:weather_app/src/widgets/weather_view.dart';
 
 class HomePage extends StatefulWidget {
