@@ -29,6 +29,9 @@ jobs:
     
     # Get flutter dependencies.
     - run: flutter pub get
+
+    # Build generated files
+    - run: flutter packages pub run build_runner build --delete-conflicting-outputs
     
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
