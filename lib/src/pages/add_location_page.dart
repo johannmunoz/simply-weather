@@ -124,9 +124,9 @@ class _AddLocationPage extends State<AddLocationPage> {
                         await SharedPreferences.getInstance();
 
                     List<String> locationsStored =
-                        prefs.getStringList('locations') ?? [];
+                        prefs.getStringList('locationsList') ?? [];
                     locationsStored.add(location.toJson());
-                    await prefs.setStringList('locations', locationsStored);
+                    await prefs.setStringList('locationsList', locationsStored);
 
                     Navigator.pushNamedAndRemoveUntil(
                         context, "/", (Route<dynamic> route) => false);

@@ -50,7 +50,7 @@ class SearchInfo {
 
   static SearchInfo fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
-  
+
     return SearchInfo(
       id: map['id'],
       name: map['name'],
@@ -107,13 +107,25 @@ class Coord {
   static Coord fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
+    final lat = _numberToDouble(map['lat']);
+    final lon = _numberToDouble(map['lon']);
+
     return Coord(
-      lat: map['lat'],
-      lon: map['lon'],
+      lat: lat,
+      lon: lon,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   static Coord fromJson(String source) => fromMap(json.decode(source));
+}
+
+double _numberToDouble(dynamic number) {
+  if (number == null) return 0.0;
+  if (number is double) {
+    return number;
+  } else {
+    return double.tryParse(number.toString());
+  }
 }

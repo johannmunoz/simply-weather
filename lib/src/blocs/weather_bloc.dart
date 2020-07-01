@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/models/search_model.dart';
-import 'package:weather_app/src/models/weather_Item.dart';
+import 'package:weather_app/src/models/weather_item.dart';
 
 import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,7 +30,7 @@ class WeatherBloc {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     DateTime timeNow = DateTime.now();
 
-    List<String> locationsJson = prefs.getStringList('locations') ?? [];
+    List<String> locationsJson = prefs.getStringList('locationsList') ?? [];
     List<String> fetchedWeatherListJson =
         prefs.getStringList('weatherList') ?? [];
     String lastUpdateJson = prefs.getString('lastUpdate');

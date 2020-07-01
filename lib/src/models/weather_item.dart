@@ -24,7 +24,7 @@ class WeatherItem {
       location: search.name,
       country: search.sys.country,
       current: CurrentItem(
-        date: _getFormatedDate(weather.current.dt),
+        date: _getFormatedDate(weather.current.dt, 'long'),
         isDay: _getIsDay(weather.current),
         temp: _getCelciusTemp(weather.current.temp, true),
         feelsLikeTemp: _getCelciusTemp(weather.current.feelsLike),
@@ -226,7 +226,17 @@ String _getCelciusTemp(double value, [bool hideSymbol = false]) {
   return '${result.round()} °C';
 }
 
-String _getFormatedDate(DateTime dateTime) {
-  final f = DateFormat('MMM d');
-  return f.format(dateTime);
+String _getFormatedDate(DateTime dateTime, [String formatType = 'short']) {
+  DateFormat format;
+  switch (formatType) {
+    case 'short':
+      format = DateFormat('MMM d');
+      break;
+    case 'long':
+      format = DateFormat('E, h:m a');
+      break;
+    default:
+      format = DateFormat('MMM d');
+  }
+  return format.format(dateTime);
 }

@@ -4,10 +4,11 @@ import 'package:weather_app/src/models/search_model.dart';
 import 'dart:convert';
 
 import 'package:weather_app/src/models/weather_model.dart';
-import 'package:weather_app/src/resources/api_key.dart';
 
 class WeatherApiProvider {
   Client client = Client();
+
+  String apiKey = '4c65e15aa49552f68a063b06cf9b1b2a';
 
   final _fetchLocationsEndpoint = 'http://api.openweathermap.org/data/2.5/find';
   final _fetchWeatherEndpoint =

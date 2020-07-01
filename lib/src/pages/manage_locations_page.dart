@@ -20,7 +20,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
 
   void _getLocations() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> locationsJson = prefs.getStringList('locations') ?? [];
+    List<String> locationsJson = prefs.getStringList('locationsList') ?? [];
     final locations =
         locationsJson.map((location) => SearchInfo.fromJson(location)).toList();
 
@@ -39,7 +39,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setStringList(
-        'locations', _locations.map((e) => e.toJson()).toList());
+        'locationsList', _locations.map((e) => e.toJson()).toList());
   }
 
   Widget buildListTile(SearchInfo location) {
@@ -55,7 +55,7 @@ class _ManageLocationsPageState extends State<ManageLocationsPage> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
 
           prefs.setStringList(
-              'locations', _locations.map((e) => e.toJson()).toList());
+              'locationsList', _locations.map((e) => e.toJson()).toList());
         },
       ),
       title: Text('${location.name}, ${location.sys.country}'),
